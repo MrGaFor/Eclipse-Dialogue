@@ -1,0 +1,19 @@
+{
+  "name": "com.eclipse.dialogue",
+  "version": "1.3.0",
+  "displayName": "Eclipse Dialogue",
+  "description": "Dialogue for Unity",
+  "unity": "2021.3",
+  "author": {
+    "name": "Eclipse",
+    "url": "https://github.com/MrGaFor"
+  },
+  "keywords": [
+    "eclipse",
+    "tools",
+    "dialogue",
+    "unity",
+    "editor",
+    "utilities"
+  ]
+}
