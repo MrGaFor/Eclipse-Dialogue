@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using Conversa.Runtime;
 using UnityEditor.Experimental.GraphView;
@@ -48,3 +49,4 @@ namespace Conversa.Editor
 		static Color GetColor(int r, int g, int b) => new Color(r/255f, g/255f, b/255f);
 	}
 }
+#endif

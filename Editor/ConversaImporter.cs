@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Linq;
 using Conversa.Runtime;
 using UnityEditor;
@@ -65,3 +66,4 @@ namespace Conversa.Editor
 		}
 	}
 }
+#endif

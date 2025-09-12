@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Conversa.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -166,3 +167,4 @@ namespace Conversa.Editor
 // returns to its original size. Doing this "unmaximize" will call "OnDestroy" and clone the editor
 // window, so that you can continue working on the graph. It will serialize the editor, and set the
 // values of to null. This is the only way to tell apart "unmaximize" from "close".
+#endif
