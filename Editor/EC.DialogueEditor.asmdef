@@ -1,0 +1,19 @@
+{
+    "name": "EC.DialogueEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:13ac1747d60124d47b37595cba41cfcf",
+        "GUID:f1ebc8b5fccaecd479cc0870a8f79677"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
