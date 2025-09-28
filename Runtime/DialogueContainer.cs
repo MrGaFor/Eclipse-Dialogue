@@ -95,12 +95,12 @@ namespace EC.Dialogue
                     OnUserEventQueued(u).Forget();
                     break;
 
-                /*case Conversa.Runtime.Nodes.BookmarkJumpNode j:
+                /*case Conversa.Runtime.Nodes.BookmarkNode j:
 #if UNITY_EDITOR
                     if (_debugging == IsOnOff.On)
-                        Debug.Log($"OnJumpBookmark: {j.BookmarkName}");
+                        Debug.Log($"OnJumpBookmark: {j.Name}");
 #endif
-                    Runner.Begin(j.BookmarkName);
+                    Runner.Begin(j.Name);
                     break;*/
 
                 case EndEvent:

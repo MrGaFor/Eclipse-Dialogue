@@ -230,7 +230,6 @@ namespace Conversa.Runtime
 			}
 			else
 			{
-				events.OnEnd.Invoke(); // Deprecated
 				events.OnConversationEvent.Invoke(new EndEvent());
 			}
 		}

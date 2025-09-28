@@ -33,7 +33,7 @@ namespace Conversa.Runtime.Nodes
 
 		public void Process(Conversation conversation, ConversationEvents conversationEvents)
 		{
-			var node = conversation.AllNodes.OfType<BookmarkNode>().FirstOrDefault(x => x.Name == bookmarkName);
+			var node = conversation.AllNodes.OfType<BookmarkNode>().FirstOrDefault(x => x.Guid == BookmarkGuid);
 			conversation.Process(node, conversationEvents);
 		}
 	}

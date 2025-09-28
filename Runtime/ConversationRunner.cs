@@ -22,15 +22,6 @@ namespace Conversa.Runtime
 
 		public UnityEvent<IConversationEvent> OnConversationEvent => conversationEvents.OnConversationEvent;
 
-		#region deprecated
-
-		public UnityEvent<SimpleMessageEvent> OnMessage => conversationEvents.OnMessage;
-		public UnityEvent<SimpleChoiceEvent> OnChoice => conversationEvents.OnChoice;
-		public UnityEvent<SimpleEventEvent> OnUserEvent => conversationEvents.OnUserEvent;
-		public UnityEvent OnEnd => conversationEvents.OnEnd;
-
-		#endregion
-
 		public ConversationRunner(Conversation conversation)
 		{
 			this.conversation = conversation;
