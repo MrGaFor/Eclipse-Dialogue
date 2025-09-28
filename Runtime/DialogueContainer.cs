@@ -74,6 +74,11 @@ namespace EC.Dialogue
                 case EndEvent:
                     StopDialogue().ContinueWith(() => OnEnd()).Forget();
                     break;
+
+                case Conversa.Runtime.Nodes.BookmarkJumpNode j:
+                    Runner.Begin(j.BookmarkName);
+                    break;
+                
             }
         }
 
