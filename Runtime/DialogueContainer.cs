@@ -31,12 +31,20 @@ namespace EC.Dialogue
             if (Dialogue == null) throw new InvalidOperationException("Dialogue is null");
             Runner = new ConversationRunner(Dialogue);
             Runner.OnConversationEvent.AddListener(HandleEvent);
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnInitialized");
+#endif
         }
 
         public virtual async UniTask StartDialogue()
         {
             if (Runner == null) Initialize();
             IsActive = true;
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnStartDialogue");
+#endif
             await OnStarted();
             Runner.Begin();
         }
@@ -46,6 +54,10 @@ namespace EC.Dialogue
             if (Runner != null) Runner.OnConversationEvent.RemoveListener(HandleEvent);
             Runner = null;
             IsActive = false;
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnStopDialogue");
+#endif
             _messages.Clear();
             _choices.Clear();
             _users.Clear();
@@ -72,10 +84,18 @@ namespace EC.Dialogue
                     break;
 
                 case EndEvent:
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnEndDialogue");
+#endif
                     StopDialogue().ContinueWith(() => OnEnd()).Forget();
                     break;
 
                 case Conversa.Runtime.Nodes.BookmarkJumpNode j:
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnJumpBookmark: {j.BookmarkName}");
+#endif
                     Runner.Begin(j.BookmarkName);
                     break;
                 
@@ -87,6 +107,10 @@ namespace EC.Dialogue
         {
             if (_messages.Count == 0) return;
             var m = _messages.Dequeue();
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnProcessMessage: {m.Actor.GetValue()} [{m.Emotion}]: {m.Message.GetValue()}");
+#endif
             await OnMessageUse(m);
             m.Advance();
         }
@@ -106,6 +130,10 @@ namespace EC.Dialogue
         {
             if (_choices.Count == 0) return;
             var c = _choices.Dequeue();
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnProcessChoose: {c.Actor.GetValue()} [{c.Emotion}]: {c.Message.GetValue()}. Use ID: {optionIndex}");
+#endif
             await OnChoiceUse(c, optionIndex);
             c.Options[optionIndex].Advance();
         }
@@ -115,6 +143,10 @@ namespace EC.Dialogue
         {
             if (_users.Count == 0) return;
             var u = _users.Dequeue();
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnProcessUserEvent: {u.Tag}");
+#endif
             await OnUserEventUse(u);
             u.Advance();
         }
@@ -135,5 +167,18 @@ namespace EC.Dialogue
         protected virtual async UniTask OnChoiceUse(SimpleChoiceEvent e, int optionIndex) { }
         protected virtual async UniTask OnUserEventUse(SimpleEventEvent e) { }
 #pragma warning restore CS1998
+
+
+#if UNITY_EDITOR
+        private enum IsOnOff { On, Off }
+        [BoxGroup("Debugging", false), SerializeField] private IsOnOff _debugging = IsOnOff.Off;
+
+        [BoxGroup("Debugging"), SerializeField, Button("Initialize"), ShowIf("_debugging", IsOnOff.On), DisableInEditorMode] private void DebugInitialize() => Initialize();
+        [BoxGroup("Debugging"), SerializeField, Button("Start Dialogue"), ShowIf("_debugging", IsOnOff.On), DisableInEditorMode] private void DebugStartDialogue() => StartDialogue().Forget();
+        [BoxGroup("Debugging"), SerializeField, Button("Stop Dialogue"), ShowIf("_debugging", IsOnOff.On), DisableInEditorMode] private void DebugStopDialogue() => StopDialogue().Forget();
+        [BoxGroup("Debugging"), SerializeField, Button("Use Message"), ShowIf("_debugging", IsOnOff.On), DisableInEditorMode] private void DebugUseMessage() => ProcessNextMessage();
+        [BoxGroup("Debugging"), SerializeField, Button("Use Choice"), HorizontalGroup("Debugging/choice", Order = 1), DisableInEditorMode, ShowIf("_debugging", IsOnOff.On)] private void DebugUseChoice() => ProcessNextMessage();
+        [BoxGroup("Debugging"), SerializeField, HorizontalGroup("Debugging/choice", 50), HideLabel, ShowIf("_debugging", IsOnOff.On)] private int _debugChooseId = 0;
+#endif
     }
 }
