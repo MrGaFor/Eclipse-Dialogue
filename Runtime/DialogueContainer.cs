@@ -70,18 +70,38 @@ namespace EC.Dialogue
             {
                 case SimpleMessageEvent m:
                     _messages.Enqueue(m);
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnAddMessage: {m.Actor.GetValue()} [{m.Emotion}]: {m.Message.GetValue()}");
+#endif
                     OnMessageQueued(m).Forget();
                     break;
 
                 case SimpleChoiceEvent c:
                     _choices.Enqueue(c);
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnAddChoose: {c.Actor.GetValue()} [{c.Emotion}]: {c.Message.GetValue()}. ID`s count: {c.Options.Count}");
+#endif
                     OnChoiceQueued(c).Forget();
                     break;
 
                 case SimpleEventEvent u:
                     _users.Enqueue(u);
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnAddUserEvent: {u.Tag}");
+#endif
                     OnUserEventQueued(u).Forget();
                     break;
+
+                /*case Conversa.Runtime.Nodes.BookmarkJumpNode j:
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnJumpBookmark: {j.BookmarkName}");
+#endif
+                    Runner.Begin(j.BookmarkName);
+                    break;*/
 
                 case EndEvent:
 #if UNITY_EDITOR
@@ -90,15 +110,6 @@ namespace EC.Dialogue
 #endif
                     StopDialogue().ContinueWith(() => OnEnd()).Forget();
                     break;
-
-                case Conversa.Runtime.Nodes.BookmarkJumpNode j:
-#if UNITY_EDITOR
-                    if (_debugging == IsOnOff.On)
-                        Debug.Log($"OnJumpBookmark: {j.BookmarkName}");
-#endif
-                    Runner.Begin(j.BookmarkName);
-                    break;
-                
             }
         }
 
