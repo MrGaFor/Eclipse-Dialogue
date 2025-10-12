@@ -16,6 +16,7 @@ namespace EC.Dialogue
 
         protected readonly Queue<SimpleMessageEvent> _messages = new();
         protected readonly Queue<SimpleChoiceEvent> _choices = new();
+        protected readonly Queue<SimpleDelayEvent> _delays = new();
         protected readonly Queue<SimpleEventEvent> _users = new();
 
         public bool IsActive { get; private set; }
@@ -86,6 +87,16 @@ namespace EC.Dialogue
                     OnChoiceQueued(c).Forget();
                     break;
 
+                case SimpleDelayEvent d:
+                    _delays.Enqueue(d);
+#if UNITY_EDITOR
+                    if (_debugging == IsOnOff.On)
+                        Debug.Log($"OnAddDelay: {d.Delay} seconds");
+#endif
+                    OnDelayQueued(d).Forget();
+                    ProcessNextDelay();
+                    break;
+
                 case SimpleEventEvent u:
                     _users.Enqueue(u);
 #if UNITY_EDITOR
@@ -149,6 +160,19 @@ namespace EC.Dialogue
             c.Options[optionIndex].Advance();
         }
 
+        public void ProcessNextDelay() => OnProcessNextDelay().Forget();
+        public async UniTask OnProcessNextDelay()
+        {
+            if (_delays.Count == 0) return;
+            var d = _delays.Dequeue();
+#if UNITY_EDITOR
+            if (_debugging == IsOnOff.On)
+                Debug.Log($"OnProcessDelay: {d.Delay} seconds");
+#endif
+            await UniTask.Delay(TimeSpan.FromSeconds(d.Delay));
+            d.Advance();
+        }
+
         public void ProcessNextUserEvent() => OnProcessNextUserEvent().Forget();
         public async UniTask OnProcessNextUserEvent()
         {
@@ -171,11 +195,13 @@ namespace EC.Dialogue
         // Add Block
         protected virtual async UniTask OnMessageQueued(SimpleMessageEvent e) { }
         protected virtual async UniTask OnChoiceQueued(SimpleChoiceEvent e) { }
+        protected virtual async UniTask OnDelayQueued(SimpleDelayEvent e) { }
         protected virtual async UniTask OnUserEventQueued(SimpleEventEvent e) { }
 
         // Use Block
         protected virtual async UniTask OnMessageUse(SimpleMessageEvent e) { }
         protected virtual async UniTask OnChoiceUse(SimpleChoiceEvent e, int optionIndex) { }
+        protected virtual async UniTask OnDelayUse(SimpleDelayEvent e) { }
         protected virtual async UniTask OnUserEventUse(SimpleEventEvent e) { }
 #pragma warning restore CS1998
 

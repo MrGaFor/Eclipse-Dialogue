@@ -16,6 +16,7 @@ namespace Conversa.Editor
 			tree.AddMenuEntry<CustomMessageNodeView>("Custom Message", 2);
             tree.AddMenuEntry<SimpleChoiceNodeView>("Choice", 2);
 			tree.AddMenuEntry<SimpleEventNodeView>("Event", 2);
+			tree.AddMenuEntry<SimpleDelayNodeView>("Delay", 2);
             tree.AddMenuEntry<ConditionalNodeView>("Branch", 2);
 			tree.AddMenuEntry<BookmarkNodeView>("Bookmark", 2);
 
