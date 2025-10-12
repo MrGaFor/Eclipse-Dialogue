@@ -179,6 +179,19 @@ namespace EC.Dialogue
         protected virtual async UniTask OnUserEventUse(SimpleEventEvent e) { }
 #pragma warning restore CS1998
 
+        #region --- PROPERTY ---
+        public void SetProperty<T>(string propertyName, T value) => Runner.SetProperty<T>(propertyName, value);
+        public void SetPropertyInt(string propertyName, int value) => SetProperty<int>(propertyName, value);
+        public void SetPropertyFloat(string propertyName, float value) => SetProperty<float>(propertyName, value);
+        public void SetPropertyString(string propertyName, string value) => SetProperty<string>(propertyName, value);
+        public void SetPropertyBool(string propertyName, bool value) => SetProperty<bool>(propertyName, value);
+
+        public T GetProperty<T>(string propertyName) => Runner.GetProperty<T>(propertyName);
+        public int GetPropertyInt(string propertyName) => GetProperty<int>(propertyName);
+        public float GetPropertyFloat(string propertyName) => GetProperty<float>(propertyName);
+        public string GetPropertyString(string propertyName) => GetProperty<string>(propertyName);
+        public bool GetPropertyBool(string propertyName) => GetProperty<bool>(propertyName);
+        #endregion
 
 #if UNITY_EDITOR
         private enum IsOnOff { On, Off }
