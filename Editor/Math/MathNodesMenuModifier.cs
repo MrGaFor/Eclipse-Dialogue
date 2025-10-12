@@ -1,5 +1,6 @@
 using Conversa.Editor.Nodes.Math;
 using Conversa.Runtime;
+using Conversa.Runtime.Nodes.MathOperators;
 
 namespace Conversa.Editor
 {
@@ -17,7 +18,9 @@ namespace Conversa.Editor
 
 			tree.AddMenuEntry<CompareNodeView>("Compare number", 2);
 			tree.AddMenuEntry<RandomFloatView>("Random", 2);
-			tree.AddGroup("Obsolete", 2);
+			tree.AddMenuEntry<ConcatNodeView>("Concat", 2);
+			tree.AddMenuEntry<StringLocalizationNodeView>("String Localization", 2);
+            tree.AddGroup("Obsolete", 2);
 			tree.AddMenuEntry<GreaterThanNodeView>("Greater than", 3);
 			tree.AddMenuEntry<LessThanNodeView>("Less than", 3);
 			tree.AddMenuEntry<EqualsNodeView>("Equals", 3);

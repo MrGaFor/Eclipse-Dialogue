@@ -13,7 +13,8 @@ namespace Conversa.Editor
 		{
 			tree.AddGroup("Basics");
 			tree.AddMenuEntry<SimpleMessageNodeView>("Message", 2);
-			tree.AddMenuEntry<SimpleChoiceNodeView>("Choice", 2);
+			tree.AddMenuEntry<CustomMessageNodeView>("Custom Message", 2);
+            tree.AddMenuEntry<SimpleChoiceNodeView>("Choice", 2);
 			tree.AddMenuEntry<SimpleEventNodeView>("Event", 2);
             tree.AddMenuEntry<ConditionalNodeView>("Branch", 2);
 			tree.AddMenuEntry<BookmarkNodeView>("Bookmark", 2);
